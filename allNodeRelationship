@@ -1,0 +1,53 @@
+<?php
+echo "hello php neo4j:</br>";
+require_once 'vendor/autoload.php';
+
+use Neoxygen\NeoClient\ClientBuilder;
+
+$client = ClientBuilder::create()
+    ->addConnection('default','http','localhost',7474,true,'user','password')
+    ->setAutoFormatResponse(true)
+    ->setDefaultTimeout(200)
+    ->build();
+
+$version = $client->getNeo4jVersion();
+echo $version;
+
+$query = 'match n return n';
+$result = $client->sendCypherQuery($query)->getResult();
+$i=1;
+foreach ($result->getNodes() as $node){
+ echo "</br>num $i :";
+ $i=$i+1;
+ echo  $node->getLabel(); 
+  $prop = ($node->getLabel() === 'Person') ? 'name' : 'name';
+   $nodes[] = ['title' => $node->getProperty($prop),'label' => $node->getLabel()];
+   echo " -> $prop";
+   $p1=$node->getId();
+   echo " =>Id: $p1";
+   $p2=$node->getProperty('name');
+   echo " =>name: $p2";
+}
+echo "</br>node end</br>";
+    
+   $query = 'match n optional match (n)-[r]->() return r';
+   $result = $client->sendCypherQuery($query)->getResult();
+    $j=1;
+    foreach ($result->getRelationships() as $rel){
+	$edges[] = [
+	'source' => $nodesPositions[$rel->getStartNode()->getId()],
+	'target' => $nodesPositions[$rel->getEndNode()->getId()]
+	];
+	echo "</br>num $j :";
+	$r0=$rel->getId();
+        echo " =>Id: $r0";
+	$r0=$rel->getType();
+        echo " =>Type: $r0";
+	$r1=$rel->getStartNode()->getId();
+        echo " =>startId: $r1";
+	$r2=$rel->getEndNode()->getId();
+        echo " =>endId: $r2";
+
+	}
+echo "</br>relationship end</br>";
+
