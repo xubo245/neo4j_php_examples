@@ -2,10 +2,15 @@
 neo4j,php,examples,neoclient
 
 1.setup neo4j and neoclient
+
 2.create graph in neo4j by create.txt
+
 3. modify you file in addConnection('default','http','localhost',7474,true,'user','password')
+
 4.look :http://localhost/phpclient/tests/allNodeRelationship.php(phpclient is neoclient)
+
 5.result:
+
 hello php neo4j:
 2.3.0-M02
 num 1 :Person -> name =>Id: 129 =>name: S
